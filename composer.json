@@ -1,0 +1,30 @@
+{
+    "name": "TRMS/Carousel",
+    "description": "A PHP package to access the Carousel API",
+    "require": {
+        "nesbot/carbon": "^1.22",
+        "guzzlehttp/guzzle": "~6.0",
+        "tightenco/collect": "^5.4",
+        "larapack/dd": "1.*"
+    },
+    "require-dev": {
+      "mockery/mockery": "~0.9.4",
+      "phpunit/phpunit": "~5.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "TRMS\\Carousel\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CarouselTests\\": "Tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Seth Phillips",
+            "email": "seth.phillips@trms.com"
+        }
+    ]
+}
