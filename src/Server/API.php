@@ -9,6 +9,10 @@ use TRMS\Carousel\Models\Group;
 use TRMS\Carousel\Models\CarouselModel;
 use TRMS\Carousel\Exceptions\CarouselAPIException;
 
+use TRMS\Carousel\Requests\ModelRequest;
+use TRMS\Carousel\Requests\ApiRequest;
+use TRMS\Carousel\Requests\FileUploadRequest;
+
 class API
 {
   private $handler;
@@ -42,46 +46,81 @@ class API
   public function whoAmI()
   {
     $request = new APIRequest($this->client, $this->handler);
-    $response = $request->get('whoami');
+    $whoami = $request->get('whoami');
+    $id = $whoami['id'];
+    $user = $request->get("user/$id");
 
-    if(is_array($response[0]) === false){
-      return;
+    return new User($user);
+  }
+
+  public function get(ModelRequest $request)
+  {
+    $responseClass = $request->getResponseClassName();
+    $apiRequest = new APIRequest($this->client, $this->handler);
+
+    if($request->id){
+      $response = $apiRequest->get($request->url());
+      return new $responseClass($response,$this);
+    } else {
+      $response = $apiRequest->get($request->url(),$request->queryParams);
+      return collect($response)->filter()->map(function($properties) use ($responseClass){
+        return new $responseClass($properties,$this);
+      });
     }
-    return new User($response[0]);
-  }
-
-  public function getBulletins(Array $query = [])
-  {
-    $request = new APIRequest($this->client, $this->handler);
-    $response = $request->get('bulletins',$query);
-    return collect($response)->filter()->map(function($properties){
-      return new Bulletin($properties,$this);
-    });
-  }
-
-  public function getBulletin(string $id)
-  {
-    $request = new APIRequest($this->client, $this->handler);
-    $response = $request->get("bulletins/$id");
-    return new Bulletin($response,$this);
-  }
-
-  public function getGroup(string $id)
-  {
-    $request = new APIRequest($this->client, $this->handler);
-    $response = $request->get("groups/$id");
-    return new Group($response);
   }
 
   public function save(CarouselModel $model)
   {
     $endpoint = $model->getSaveEndpoint();
     $method = $model->getSaveMethod();
-    $modeltype = get_class($model);
 
-    $request = new APIRequest($this->client, $this->handler);
+    $options = [
+      'headers'=>[
+        'Content-Type'=>'application/json'
+      ]
+    ];
+    $request = new APIRequest($this->client, $this->handler, $options);
     $response = $request->$method($endpoint, json_encode($model->toArray()));
 
-    return new $modeltype($response);
+    $model->setProps($response);
+    return $model;
+  }
+
+  public function delete(CarouselModel $model)
+  {
+    $endpoint = $model->getSaveEndpoint();
+    $options = [
+      'headers'=>[
+        'Content-Type'=>'application/json'
+      ]
+    ];
+    $request = new APIRequest($this->client, $this->handler, $options);
+    $response = $request->delete($endpoint);
+    $model->setProps($response);
+    return $model;
+  }
+
+  public function upload(FileUploadRequest $request)
+  {
+    return $request->files
+      ->map(function($file) use ($request){
+        $apiRequest = new APIRequest($this->client, $this->handler);
+        try{
+          return $apiRequest->upload($request->url(),$file, $request->params());
+        } catch (CarouselAPIException $e){
+          return $e;
+        }
+      })
+      ->map(function($response) use ($request){
+        $responseClass = $request->getResponseClassName();
+
+        if(is_array($response)){
+          if($responseClass = 'TRMS\Carousel\Models\Bulletin'){
+            $response = $response['Bulletins'][0];
+          }
+          return new $responseClass($response);
+        }
+        return $response;
+      });
   }
 }

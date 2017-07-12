@@ -6,6 +6,11 @@ use TRMS\Carousel\Models\User;
 use TRMS\Carousel\Models\Bulletin;
 use TRMS\Carousel\Models\Group;
 
+use TRMS\Carousel\Requests\BulletinRequest;
+use TRMS\Carousel\Requests\GroupRequest;
+
+use TRMS\Carousel\Requests\ModelRequest;
+
 use CarouselTests\MockData\MockResponder;
 
 use GuzzleHttp\Handler\MockHandler;
@@ -63,6 +68,7 @@ class APITest extends PHPUnit_Framework_TestCase
     $mockResponder = new MockResponder;
     $mock = new MockHandler([
       new Response(200,[],$mockResponder->whoAmI()),
+      new Response(200,[],$mockResponder->user()),
     ]);
     $handler = HandlerStack::create($mock);
 
@@ -75,6 +81,7 @@ class APITest extends PHPUnit_Framework_TestCase
 
     $this->assertInstanceOf(User::class, $loggedInUser);
     $this->assertEquals('admin', $loggedInUser->id);
+    $this->assertEquals('Seth', $loggedInUser->FirstName);
     $this->assertArraySubset(['id'=>'admin'],$loggedInUser->toArray());
   }
 
@@ -88,10 +95,11 @@ class APITest extends PHPUnit_Framework_TestCase
     $handler = HandlerStack::create($mock);
 
     $server = new API();
+    $request = new ModelRequest(Bulletin::class);
     $bulletins = $server
       ->addMockHandler($handler)
       ->connect('my_server','username','password')
-      ->getBulletins();
+      ->get($request);
 
     $group = $bulletins[0]->getGroup();
 
@@ -111,10 +119,11 @@ class APITest extends PHPUnit_Framework_TestCase
     $handler = HandlerStack::create($mock);
 
     $server = new API();
+    $request = new ModelRequest(Bulletin::class,['id'=>'1']);
     $bulletin = $server
       ->addMockHandler($handler)
       ->connect('my_server','username','password')
-      ->getBulletin('1');
+      ->get($request);
 
     $group = $bulletin->getGroup();
 
@@ -175,10 +184,11 @@ class APITest extends PHPUnit_Framework_TestCase
     $handler = HandlerStack::create($mock);
 
     $server = new API();
+    $request = new ModelRequest(Group::class,['id'=>'1']);
     $group = $server
       ->addMockHandler($handler)
       ->connect('my_server','username','password')
-      ->getGroup('1');
+      ->get($request);
 
     $this->assertInstanceOf(Group::class, $group);
     $this->assertEquals(1, $group->id);

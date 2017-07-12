@@ -6,11 +6,6 @@ class Group extends CarouselModel
 
   public $ZoneID, $Description, $Buletins;
 
-  public function getSaveEndpoint(){
-    if($this->id){
-      return "groups/$this->id";
-    }
-    return "groups";
-  }
+  protected $endpoint = 'groups';
 
 }

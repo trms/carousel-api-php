@@ -1,0 +1,1 @@
+This package is under development and will evolve.  Documentation is soon to come so bear with us.  Feel free to reach out to me directly in the meantime if you want to use the package and have questions.

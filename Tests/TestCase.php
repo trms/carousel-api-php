@@ -1,4 +1,4 @@
-<?php namespace TRMS\Carousel\Tests;
+<?php
 
 class TestCase extends PHPUnit_Framework_TestCase
 {

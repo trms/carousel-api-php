@@ -14,7 +14,7 @@ class CarouselServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-          __DIR__.'config/carousel.php' => config_path('carousel.php'),
+          __DIR__.'/config/carousel.php' => config_path('carousel.php'),
         ]);
     }
 

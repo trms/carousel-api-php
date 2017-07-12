@@ -2,21 +2,41 @@
 
 use \DateTime;
 use Carbon\Carbon;
+
+use TRMS\Carousel\Models\Traits\HasBlocks;
+use TRMS\Carousel\Models\Traits\HasBackground;
+use TRMS\Carousel\Models\Traits\HasUser;
+use TRMS\Carousel\Models\Traits\HasTags;
+
 use TRMS\Carousel\Server\API;
 use TRMS\Carousel\Exceptions\CarouselModelException;
 
 class Bulletin extends CarouselModel
 {
+
+  use HasBlocks;
+  use HasBackground;
+  use HasUser;
+  use HasTags {
+    addTag as protected traitAddTag;
+    removeTag as protected traitRemoveTag;
+  }
+  public function addTag(BulletinTag $tag)
+  {
+    return $this->traitAddTag($tag);
+  }
+  public function removeTag(BulletinTag $tag)
+  {
+    return $this->traitRemoveTag($tag);
+  }
+
   public $id;
   public $IsAlert = false;
   public $Type = 'Standard';
 
-  public $Description = "";
+  public $Description = "My Awesome Bulletin";
 
-  public $DateTimeOn;
-  public $DateTimeOff;
-  public $CycleTimeOff;
-  public $CycleTimeOn;
+  public $DateTimeOn, $DateTimeOff, $CycleTimeOff, $CycleTimeOn;
 
   public $IsScheduled = false;
 
@@ -38,41 +58,42 @@ class Bulletin extends CarouselModel
 
   //relationships
   public $GroupID;
-  public $GroupObject;
-  public $UserID;
   public $TransitionID;
   public $SoundID;
-  public $BackgroundID;
-  public $Tags = [];
-  public $Blocks = [];
+
+  protected $endpoint = 'bulletins';
 
   public function __construct(Array $props = [],API $api=null)
   {
     $this->resetSchedule()->resetCycleTimes();
-    if($api){
-      $this->api = $api;
-    }
-    parent::__construct($props);
+    parent::__construct($props,$api);
   }
 
-  public function getSaveEndpoint(){
-    if($this->id){
-      return "bulletins/$this->id";
-    }
-    return "bulletins";
+  public function setProps(Array $props)
+  {
+    $this->setBlocksFromProps($props);
+    $this->setTagsFromProps($props,'TRMS\Carousel\Models\BulletinTag');
+    parent::setProps($props);
+  }
+
+  static function fromTemplate(Template $template)
+  {
+    $props = $template->toArray();
+    unset($props['UserID']);
+    unset($props['id']);
+    unset($props['Description']);
+    return new static($props);
   }
 
   public function setGroup(Group $group)
   {
-    $this->GroupID = $group->id;
-    $this->GroupObject = $group;
+    $this->setBelongsTo('Group', $group);
     return $this;
   }
 
   public function getGroup()
   {
-    $group = $this->getBelongsTo('Group');
-    if($group){
+    if($group = $this->getBelongsTo('Group')){
       return $group;
     }
     throw new CarouselModelException("use setGroup method to set the group relationship for new bulletins");

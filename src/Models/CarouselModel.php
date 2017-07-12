@@ -1,13 +1,30 @@
 <?php namespace TRMS\Carousel\Models;
 
 use TRMS\Carousel\Server\API;
+use TRMS\Carousel\Requests\ModelRequest;
+use TRMS\Carousel\Exceptions\CarouselModelException;
 
 abstract class CarouselModel implements SaveableInterface
 {
-  public function __construct(Array $props = [])
+
+  protected $endpoint = 'set $endpoint on the child';
+  protected $api;
+
+  public function __construct(Array $props = [],API $api=null)
+  {
+    $this->setProps($props);
+
+    if($api){
+      $this->setApi($api);
+    }
+  }
+
+  public function setProps(Array $props)
   {
     foreach ($props as $key => $value) {
-      $this->$key = $value;
+      if(is_array($value) === false){
+        $this->$key = $value;
+      }
     }
   }
 
@@ -18,16 +35,42 @@ abstract class CarouselModel implements SaveableInterface
     return "post";
   }
 
-  public function getBelongsTo($relationship)
+  public function getSaveEndpoint()
+  {
+    if($this->id){
+      return "$this->endpoint/$this->id";
+    }
+    return $this->endpoint;
+  }
+
+  public function getEndpoint()
+  {
+    return $this->endpoint;
+  }
+
+  public function getBelongsTo(string $relationship, string $relationshipClass='')
   {
     $relationshipObject = $relationship."Object";
     $relationshipID = $relationship."ID";
-    if(!$this->$relationshipObject && isset($this->api) && $this->$relationshipID){
-      return $this->api->getGroup($this->$relationshipID);
-    } else if($this->$relationshipObject){
+
+    if(!$relationshipClass){
+      $relationshipClass = "TRMS\\Carousel\\Models\\$relationship";
+    }
+    if(isset($this->$relationshipObject) === false && $this->getApi() && $this->$relationshipID){
+      return $this->getApi()->get(new ModelRequest($relationshipClass,['id'=>$this->$relationshipID]));
+    } else if(isset($this->$relationshipObject)){
       return $this->$relationshipObject;
     }
     return;
+  }
+
+  public function setBelongsTo(string $relationship, CarouselModel $object)
+  {
+    $relationshipObject = $relationship."Object";
+    $relationshipID = $relationship."ID";
+
+    $this->$relationshipObject = $object;
+    $this->$relationshipID = $object->id;
   }
 
   public function toArray()
@@ -36,21 +79,53 @@ abstract class CarouselModel implements SaveableInterface
 
     $properties = collect($public_props)
       ->pluck('name')
-      ->reject(function($prop){
-        return is_object($this->$prop);
+      ->reject(function($propName){
+        return is_object($this->$propName);
       })
       ->keyBy(function($propName){
         return $propName;
       })
-      ->map(function($prop){
-        return $this->$prop;
-      });
+      ->map(function($propName){
+        return $this->$propName;
+      })
+      ->map(function($property){
+        return $this->flattenRelationships($property);
+      })
+      ->toArray();
 
     return $properties;
   }
 
-  public function setApi(API $api){
+  public function __toString()
+  {
+    return json_encode($this->toArray(),true);
+  }
+
+  private function flattenRelationships($relationship)
+  {
+    if(!is_array($relationship) && !is_object($relationship)){
+      return $relationship;
+    }
+
+    if(is_array($relationship)){
+      return array_map(function($r){
+        return $this->flattenRelationships($r);
+      },$relationship);
+    }
+
+    if(is_object($relationship)){
+      return $relationship->toArray();
+    }
+  }
+
+  public function setApi(API $api)
+  {
     $this->api = $api;
     return $this;
+  }
+
+  public function getApi()
+  {
+    return $this->api;
   }
 }

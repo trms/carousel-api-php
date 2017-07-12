@@ -3,7 +3,12 @@
 use CarouselTests\MockData\MockResponder;
 
 use TRMS\Carousel\Models\Bulletin;
+use TRMS\Carousel\Models\Template;
 use TRMS\Carousel\Models\Group;
+use TRMS\Carousel\Models\BulletinBlock;
+use TRMS\Carousel\Models\Media;
+
+
 use TRMS\Carousel\Server\API;
 use TRMS\Carousel\Exceptions\CarouselModelException;
 
@@ -16,6 +21,21 @@ use Carbon\Carbon;
 
 class BulletinTest extends PHPUnit_Framework_TestCase
 {
+
+  function test_bulletin_blocks_serialize_correctly()
+  {
+    $bulletin = new Bulletin();
+
+    $block1 = new BulletinBlock(['BlockType'=>'Text','Text'=>'foobarbaz']);
+    $block2 = new BulletinBlock(['BlockType'=>'Rectangle']);
+
+    $bulletin->Blocks = [$block1, $block2];
+
+    $this->assertEquals(['BlockType'=>'Text','Text'=>'foobarbaz'],  $bulletin->toArray()['Blocks'][0]);
+    $this->assertEquals(['BlockType'=>'Rectangle'],  $bulletin->toArray()['Blocks'][1]);
+  }
+
+
   function test_you_can_add_a_group_relationship_after_instantiation()
   {
     $bulletin = new Bulletin();
@@ -28,7 +48,6 @@ class BulletinTest extends PHPUnit_Framework_TestCase
 
   function test_if_the_group_object_has_not_been_resolved_an_api_request_will_be_made()
   {
-    $mockResponder = new MockResponder;
     $mock = new MockHandler([
       new Response(200,[],json_encode(['id'=>'12'])),
     ]);
@@ -59,8 +78,7 @@ class BulletinTest extends PHPUnit_Framework_TestCase
 
   function test_an_array_of_bulletin_params_passed_to_the_constructor_sets_them_on_the_bulletin()
   {
-    $mockResponder = new MockResponder;
-    $mockBulletins = json_decode($mockResponder->bulletins(),true);
+    $mockBulletins = json_decode(MockResponder::bulletins(),true);
     $bulletinProps = $mockBulletins[0];
 
     $bulletin = new Bulletin($bulletinProps);
