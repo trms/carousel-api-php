@@ -62,7 +62,7 @@ class APIRequest
       $this->throwException($e);
     }
 
-    return $this->parseResponse($response);
+    return $response;
   }
 
   public function upload(string $path, $stream, $params)

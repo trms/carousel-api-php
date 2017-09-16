@@ -96,7 +96,9 @@ class API
     ];
     $request = new APIRequest($this->client, $this->handler, $options);
     $response = $request->delete($endpoint);
-    $model->setProps($response);
+    if($response->getStatusCode() === 204){
+      $model->setProps(['IsDeleted'=>true]);
+    }
     return $model;
   }
 

@@ -17,7 +17,7 @@ class DeleteModelTest extends PHPUnit_Framework_TestCase
   function test_you_can_delete_a_bulletin()
   {
     $mock = new MockHandler([
-      new Response(200,[],json_encode(['IsDeleted'=>true]))
+      new Response(204)
     ]);
     $handler = HandlerStack::create($mock);
 
