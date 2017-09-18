@@ -29,7 +29,25 @@ class MockResponder
     return json_encode($data);
   }
 
+  static function orderEntries()
+  {
+    $data = [
+      [
+        "id"=> "144a801f-8967-420a-9eac-777ca3e6b990",
+        "GroupID"=> "1",
+        "Order"=> 1,
+        "Bulletins"=> ["1"]
+        ],
+      [
+        "id"=> "18b1075b-65cb-4193-a6c7-0eba0a1c2f55",
+        "GroupID"=> "2",
+        "Order"=> 2,
+        "Bulletins"=> ["2"]
+      ]
+    ];
 
+    return json_encode($data);
+  }
 
   static function bulletins()
   {

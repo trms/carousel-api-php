@@ -6,6 +6,7 @@ use GuzzleHttp\HandlerStack;
 use TRMS\Carousel\Models\User;
 use TRMS\Carousel\Models\Bulletin;
 use TRMS\Carousel\Models\Group;
+use TRMS\Carousel\Models\BulletinOrder;
 use TRMS\Carousel\Models\CarouselModel;
 use TRMS\Carousel\Exceptions\CarouselAPIException;
 
@@ -63,6 +64,11 @@ class API
       return new $responseClass($response,$this);
     } else {
       $response = $apiRequest->get($request->url(),$request->queryParams);
+
+      if($responseClass === BulletinOrder::class){
+        return new BulletinOrder($request->queryParams['ZoneID'], $response);
+      }
+
       return collect($response)->filter()->map(function($properties) use ($responseClass){
         return new $responseClass($properties,$this);
       });

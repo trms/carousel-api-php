@@ -29,7 +29,7 @@ abstract class CarouselModel implements SaveableInterface
   }
 
   public function getSaveMethod(){
-    if($this->id){
+    if(isset($this->id)){
       return "put";
     }
     return "post";
@@ -37,7 +37,7 @@ abstract class CarouselModel implements SaveableInterface
 
   public function getSaveEndpoint()
   {
-    if($this->id){
+    if(isset($this->id)){
       return "$this->endpoint/$this->id";
     }
     return $this->endpoint;
