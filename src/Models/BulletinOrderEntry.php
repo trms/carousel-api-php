@@ -10,7 +10,9 @@ class BulletinOrderEntry extends CarouselModel
     if(isset($props['id']) === false){
       throw new CarouselModelException('BulletinOrderEntry must have an id in its props. This value will always come from the Carousel Server and should not be instantiated by a consumer');
     }
-    parent::__construct($props);
+    foreach ($props as $key => $value) {
+      $this->$key = $value;
+    }
   }
 
   public function getSaveEndpoint()
