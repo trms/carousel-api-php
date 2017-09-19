@@ -18,6 +18,13 @@ class APIRequest
   }
 
   public function get($path, Array $queryParams=[]){
+    $queryParams = collect($queryParams)->map(function($param){
+      if(is_bool($param)){
+        return ($param)?'true':'false';
+      }
+      return $param;
+    })->toArray();
+
     try{
       $options = $this->options;
       $options['query'] = $queryParams;

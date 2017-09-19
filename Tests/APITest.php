@@ -194,4 +194,22 @@ class APITest extends PHPUnit_Framework_TestCase
     $this->assertEquals(1, $group->id);
     $this->assertArraySubset(['id'=>1],$group->toArray());
   }
+
+  function test_boolean_values_are_converted_to_strings_on_get()
+  {
+    $mockResponder = new MockResponder;
+    $mock = new MockHandler([
+      new Response(200,[],$mockResponder->bulletins()),
+    ]);
+    $handler = HandlerStack::create($mock);
+
+    $server = new API();
+    $request = new ModelRequest(Bulletin::class,['IsDeleted'=>true,'ZoneID'=>'5']);
+    $group = $server
+      ->addMockHandler($handler)
+      ->connect('server','username','password')
+      ->get($request);
+
+    $this->assertEquals('server/carouselapi/v1/bulletins?IsDeleted=true&ZoneID=5', (string) $mock->getLastRequest()->getUri());
+  }
 }
