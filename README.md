@@ -1,3 +1,8 @@
+[![CircleCI build badge](https://circleci.com/gh/trms/carousel-api-php.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/trms/carousel-api-php.svg?style=shield&circle-token=:circle-token)
+[![License](https://poser.pugx.org/trms/carousel/license)](https://packagist.org/packages/trms/carousel)
+[![Total Downloads](https://poser.pugx.org/trms/carousel/downloads)](https://packagist.org/packages/trms/carousel)
+[![Latest Stable Version](https://poser.pugx.org/trms/carousel/version)](https://packagist.org/packages/trms/carousel)
+
 # PHP Package for the Carousel API
 This package is designed to be a fluent interface for Tightrope Media Systems' Carousel API.  For more information on TRMS and the Carousel software please visit [www.trms.com](https://www.trms.com).
 
