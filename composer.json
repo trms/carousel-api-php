@@ -1,6 +1,7 @@
 {
     "name": "trms/carousel",
     "description": "A PHP package to access Tightrope Media Systems' Carousel Software API",
+    "license": "MIT",
     "require": {
         "nesbot/carbon": "^1.22",
         "guzzlehttp/guzzle": "~6.0",
