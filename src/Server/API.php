@@ -11,7 +11,7 @@ use TRMS\Carousel\Models\CarouselModel;
 use TRMS\Carousel\Exceptions\CarouselAPIException;
 
 use TRMS\Carousel\Requests\ModelRequest;
-use TRMS\Carousel\Requests\ApiRequest;
+use TRMS\Carousel\Requests\APIRequest;
 use TRMS\Carousel\Requests\FileUploadRequest;
 
 class API
