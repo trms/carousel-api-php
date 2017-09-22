@@ -2,6 +2,7 @@
 [![License](https://poser.pugx.org/trms/carousel/license)](https://packagist.org/packages/trms/carousel)
 [![Total Downloads](https://poser.pugx.org/trms/carousel/downloads)](https://packagist.org/packages/trms/carousel)
 [![Latest Stable Version](https://poser.pugx.org/trms/carousel/version)](https://packagist.org/packages/trms/carousel)
+[![Code Climate](https://img.shields.io/codeclimate/github/trms/carousel-api-php.svg)]()
 
 # PHP Package for the Carousel API
 This package is designed to be a fluent interface for Tightrope Media Systems' Carousel API.  For more information on TRMS and the Carousel software please visit [www.trms.com](https://www.trms.com).
