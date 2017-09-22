@@ -12,6 +12,10 @@ engines:
     checks:
       Naming/ShortVariable:
         enabled: false
+      Controversial/CamelCaseParameterName:
+        enabled: false
+      CleanCode/BooleanArgumentFlag:
+        enabled: false
 ratings:
   paths:
   - "**.inc"
