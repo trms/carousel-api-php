@@ -89,7 +89,7 @@ class API
     ];
     $request = new APIRequest($this->client, $this->handler, $options);
     $response = $request->$method($endpoint, json_encode($model->toArray()));
-
+    $model->setApi($this);
     $model->setProps($response);
     return $model;
   }

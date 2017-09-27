@@ -28,6 +28,22 @@ abstract class CarouselModel implements SaveableInterface
     }
   }
 
+  public function save()
+  {
+    if(!$this->api || !$this->id){
+      throw new CarouselModelException("You must use the API's save() method to save new models");
+    }
+    $this->api->save($this);
+  }
+
+  public function delete()
+  {
+    if(!$this->api || !$this->id){
+      throw new CarouselModelException("why would you try to delete a model that has never been persisted?");
+    }
+    $this->api->delete($this);
+  }
+
   public function getSaveMethod(){
     if(isset($this->id)){
       return "put";

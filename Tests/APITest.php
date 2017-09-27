@@ -280,4 +280,42 @@ class APITest extends PHPUnit_Framework_TestCase
     $this->assertEquals(2, count($bulletin->Blocks));
 
   }
+
+  function test_the_api_gets_set_on_a_carousel_model_when_saving_a_bulletin()
+  {
+    $mockResponder = new MockResponder;
+    $mock = new MockHandler([
+      new Response(200,[],json_encode(['Blocks'=>[[],[]]])),
+    ]);
+    $handler = HandlerStack::create($mock);
+
+    $server = new API();
+    $bulletin = new Bulletin();
+    $server
+      ->addMockHandler($handler)
+      ->connect('server','username','password')
+      ->save($bulletin);
+
+    $this->assertInstanceOf(API::class, $bulletin->getApi());
+  }
+
+  function test_a_carousel_model_that_comes_from_the_server_has_the_api_object_on_it()
+  {
+    $mockResponder = new MockResponder;
+    $mock = new MockHandler([
+      new Response(200,[],$mockResponder->bulletin()),
+    ]);
+    $handler = HandlerStack::create($mock);
+
+    $request = new ModelRequest(Bulletin::class,['id'=>'1']);
+    $server = new API();
+    $bulletin = $server
+      ->addMockHandler($handler)
+      ->connect('server','username','password')
+      ->get($request);
+
+    $this->assertEquals('server/carouselapi/v1/bulletins/1', (string) $mock->getLastRequest()->getUri());
+    $this->assertEquals('GET', (string) $mock->getLastRequest()->getMethod());
+    $this->assertInstanceOf(API::class, $bulletin->getApi());
+  }
 }
