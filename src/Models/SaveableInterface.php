@@ -3,4 +3,6 @@
 interface SaveableInterface {
   public function getSaveEndpoint();
   public function getSaveMethod();
+  public function save();
+  public function delete();
 }

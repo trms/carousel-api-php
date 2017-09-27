@@ -15,10 +15,9 @@ This package should be installed with composer and requires PHP 7+
 ```bash
 composer install trms/carousel
 ```
-## Instructions
-[Basic Useage Examples](#basic-useage-examples)
+## [Examples](#basic-useage-examples)
 
-## Servers and Requests
+## [Servers & Requests](#servers-and-requests)
 [The Server Instance](#api)
 
 [Model Requests](#modelrequest)
@@ -26,7 +25,7 @@ composer install trms/carousel
 [File Upload Requests](#fileuploadrequest)
 
 [Bulletin Order Requests](#bulletinorderrequest)
-## Models
+## [Carousel Models](#models)
 [Templates](#template)
 
 [Bulletins](#bulletin)
@@ -40,6 +39,8 @@ composer install trms/carousel
 [Tags](#tags)
 
 [Bulletin Sorting](#bulletin-sorting)
+
+## [Thrown Exceptions](#exceptions)
 
 ## Basic Useage Examples
 
@@ -152,7 +153,11 @@ Bulletin order requests are used to get the Group/Bulletin order for a given Zon
 |constructor|associative array|Request Object|Pass this an associative array of values to filter the request with. (ie:['ZoneID'=>'5'])|
 
 ## Models
-
+|Method|Parameters|Returns|Description|
+|------|----------|-------|-----------|
+|constructor|associative array|self|Constructor for the class, properties passed to it will be used to define the Model.|
+|save|none|none|This is a convenience method for saving previously persisted models. For newly instantiated models this function will throw a `CarouselModelException`.  Use the API's `save` method to save new models.|
+|delete|none|none|This is a convenience method for deleting previously persisted models. For newly instantiated models this function will throw a `CarouselModelException`.|
 ### Bulletin
 `TRMS\Carousel\Models\Bulletin`
 
@@ -160,7 +165,6 @@ A Bulletin is a piece of content displayed in Carousel.  The closest analogy wou
 #### Methods
 |Method|Parameters|Returns|Description|
 |------|----------|-------|-----------|
-|constructor|associative array|Zone Object|Constructor for the class, properties passed to it will be used to define the Bulletin.|
 |fromTemplate (static)|Template Object|Bulletin Object|Create a new unsaved bulletin from a template.|
 |resolvePartial|none|none|Resolves partial bulletins by getting them by id from the server.  See the property `PartialBulletin` for more information.  This function is called when trying to save partial bulletins.|
 |**Relationships**|
@@ -224,7 +228,6 @@ A template is the starting point for a standard Bulletin and is comprised of a b
 #### Methods
 |Method|Parameters|Returns|Description|
 |------|----------|-------|-----------|
-|constructor|associative array|Zone Object|Constructor for the class, properties passed to it will be used to define the Template.|
 |setBackground|Media Object|self - chainable|Sets the background Media to be used in this model|
 |getBackground|none|Media Object|Gets the related background Media model|
 |addBlock|Block Object|self - chainable|Add a Block relationship to the model|
@@ -252,7 +255,6 @@ A group is a container for Bulletins that allows for easier viewing sorting and 
 #### Methods
 |Method|Parameters|Returns|Description|
 |------|----------|-------|-----------|
-|constructor|associative array|Group Object|Constructor for the class, properties passed to it will be used to define the Group.|
 |setZone|Zone Object|self - chainable|Sets the Zone to be used in this model|
 |getZone|none|Zone Object|Gets the related Zone model|
 
@@ -270,7 +272,6 @@ Media represents audio, video images and backgrounds to be used in Bulletins and
 #### Methods
 |Method|Parameters|Returns|Description|
 |------|----------|-------|-----------|
-|constructor|associative array|Media Object|Constructor for the class, properties passed to it will be used to define the Media.|
 |setUser|User Object|self - chainable|Sets the User to be used in this model|
 |getUser|none|User Object|Gets the related User model|
 |addTag|Tag Object|self - chainable|Add a Tag relationship to the model.|
@@ -296,7 +297,6 @@ A Zone is an area of real estate on screen where bulletins are displayed.  The s
 #### Methods
 |Method|Parameters|Returns|Description|
 |------|----------|-------|-----------|
-|constructor|associative array|Zone Object|Constructor for the class, properties passed to it will be used to define the Zone.|
 |addTag|ZoneTag Object|self - chainable|Add a Tag relationship to the model|
 |removeTag|ZoneTag Object|self - chainable|Remove a Tag relationship from the model|
 #### Properties
@@ -326,9 +326,6 @@ Tags are metadata that can be added to the associated model.  They are used for 
 ### ZoneTag
 `TRMS\Carousel\Models\ZoneTag`
 #### Methods
-|Method|Parameters|Returns|Description|
-|------|----------|-------|-----------|
-|constructor|associative array|BulletinTag Object|Constructor for the class, properties passed to it will be used to define the Tag.|
 #### Properties
 |Property|type|Description|
 |--------|----|-----------|
@@ -356,3 +353,11 @@ This represents a Group and the order of its Bulletins.  The order of the `Bulle
 |--------|----|-----------|
 |id|string|This is set by the server and not editable.|
 |Bulletins|array|An ordered array of Bulletin ids.  Their order represents the order of Bulletins in the Group.|
+
+
+## Exceptions
+You can expect the following exceptions to be thrown if things go off the rails with the server, or if you attepmpt to do things that are unsupported or not allowed.
+
+`TRMS\Carousel\Exceptions\CarouselAPIException`
+`TRMS\Carousel\Exceptions\CarouselModelException`
+`TRMS\Carousel\Exceptions\CarouselRequestException`
