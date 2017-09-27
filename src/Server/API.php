@@ -79,7 +79,9 @@ class API
   {
     $endpoint = $model->getSaveEndpoint();
     $method = $model->getSaveMethod();
-
+    if($model->getApi() && $model->PartialBulletin){
+      $model->resolvePartial();
+    }
     $options = [
       'headers'=>[
         'Content-Type'=>'application/json'

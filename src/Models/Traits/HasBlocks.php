@@ -9,6 +9,7 @@ trait HasBlocks
 
   private function setBlocksFromProps($props)
   {
+    $this->Blocks = [];
     if(isset($props['Blocks'])){
       foreach ($props['Blocks'] as $blockprops) {
         $this->addBlock(new BulletinBlock($blockprops));

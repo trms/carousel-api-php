@@ -7,13 +7,15 @@ use TRMS\Carousel\Models\Traits\HasBlocks;
 use TRMS\Carousel\Models\Traits\HasBackground;
 use TRMS\Carousel\Models\Traits\HasUser;
 use TRMS\Carousel\Models\Traits\HasTags;
+use TRMS\Carousel\Models\Traits\ResolvesPartial;
 
 use TRMS\Carousel\Server\API;
 use TRMS\Carousel\Exceptions\CarouselModelException;
+use TRMS\Carousel\Requests\ModelRequest;
 
 class Bulletin extends CarouselModel
 {
-
+  use ResolvesPartial;
   use HasBlocks;
   use HasBackground;
   use HasUser;

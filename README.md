@@ -162,6 +162,7 @@ A Bulletin is a piece of content displayed in Carousel.  The closest analogy wou
 |------|----------|-------|-----------|
 |constructor|associative array|Zone Object|Constructor for the class, properties passed to it will be used to define the Bulletin.|
 |fromTemplate (static)|Template Object|Bulletin Object|Create a new unsaved bulletin from a template.|
+|resolvePartial|none|none|Resolves partial bulletins by getting them by id from the server.  See the property `PartialBulletin` for more information.  This function is called when trying to save partial bulletins.|
 |**Relationships**|
 |setBackground|Media Object|self - chainable|Sets the background Media to be used in this model.|
 |getBackground|none|Media Object|Gets the related background Media model.|
@@ -207,7 +208,7 @@ A Bulletin is a piece of content displayed in Carousel.  The closest analogy wou
 |RepeatInterval|int|How often a repeating bulletin repeats.|
 |LastUpdate|string|Date and time of the last rendering of this bulletin.|
 |LastError|string|The last error encountered when rendering this bulletin|
-|PartialBulletin|boolean (read only)|Getting bulletins from the server via any query other than `id` will result in a partial bulletin.  Partial bulletins do not contain Blocks and are not saveable entities.|
+|PartialBulletin|boolean (read only)|Getting bulletins from the server via any query other than `id` will result in a partial bulletin.  Partial bulletins do not contain some relationship data including Blocks and many of the properties for dynamic bulletins, if you need to act on these properties call `resolvePartial()` in order to get those properties from the server.|
 |Status|enumerable (read only)|One of the following values: Current, Queued, Hold, Old, Saved, Current-Null (no dynamic content), Current-Error|
 |Tags|array |An Array of Tag Objects|
 |TrackImpressions|boolean|Should the service track each time this bulletin is played on a player|

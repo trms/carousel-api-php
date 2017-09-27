@@ -212,4 +212,72 @@ class APITest extends PHPUnit_Framework_TestCase
 
     $this->assertEquals('server/carouselapi/v1/bulletins?IsDeleted=true&ZoneID=5', (string) $mock->getLastRequest()->getUri());
   }
+
+  function test_the_api_will_resolve_a_PartialBulletin_before_trying_to_save_it()
+  {
+    $mockResponder = new MockResponder;
+    $mock = new MockHandler([
+      new Response(200,[],$mockResponder->bulletin()),
+      new Response(200,[],$mockResponder->bulletin()),
+    ]);
+    $handler = HandlerStack::create($mock);
+
+    $bulletinMock = \Mockery::mock(Bulletin::class)->makePartial();
+    $bulletinMock->PartialBulletin = true;
+    $bulletinMock->setApi(new API());
+
+    $bulletinMock->shouldReceive('resolvePartial')
+      ->once()
+      ->andReturn($bulletinMock);
+
+    $server = new API();
+    $server
+      ->addMockHandler($handler)
+      ->connect('server','username','password')
+      ->save($bulletinMock);
+
+    \Mockery::close();
+  }
+
+  function test_the_api_will_not_resolve_a_non_PartialBulletin_before_trying_to_save_it()
+  {
+    $mockResponder = new MockResponder;
+    $mock = new MockHandler([
+      new Response(200,[],$mockResponder->bulletin()),
+      new Response(200,[],$mockResponder->bulletin()),
+    ]);
+    $handler = HandlerStack::create($mock);
+
+    $bulletinMock = \Mockery::mock(Bulletin::class)->makePartial();
+
+    $bulletinMock->shouldNotReceive('resolvePartial')
+      ->andReturn($bulletinMock);
+
+    $server = new API();
+    $server
+      ->addMockHandler($handler)
+      ->connect('server','username','password')
+      ->save($bulletinMock);
+
+    \Mockery::close();
+  }
+
+  function test_the_api_sets_the_blocks_correctly_when_saving_a_bulletin()
+  {
+    $mockResponder = new MockResponder;
+    $mock = new MockHandler([
+      new Response(200,[],json_encode(['Blocks'=>[[],[]]])),
+    ]);
+    $handler = HandlerStack::create($mock);
+
+    $server = new API();
+    $bulletin = new Bulletin(['id'=>'1','Blocks'=>[[],[],[]]]);
+    $server
+      ->addMockHandler($handler)
+      ->connect('server','username','password')
+      ->save($bulletin);
+
+    $this->assertEquals(2, count($bulletin->Blocks));
+
+  }
 }
