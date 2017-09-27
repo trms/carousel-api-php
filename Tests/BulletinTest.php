@@ -11,6 +11,7 @@ use TRMS\Carousel\Models\Media;
 
 use TRMS\Carousel\Server\API;
 use TRMS\Carousel\Exceptions\CarouselModelException;
+use TRMS\Carousel\Requests\ModelRequest;
 
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -35,6 +36,48 @@ class BulletinTest extends PHPUnit_Framework_TestCase
     $this->assertEquals(['BlockType'=>'Rectangle'],  $bulletin->toArray()['Blocks'][1]);
   }
 
+  function test_the_resolvePartial_method_will_get_partial_bulletins_from_the_api()
+  {
+    $mockApi = \Mockery::mock(API::class);
+    $mockApi->shouldReceive('get')
+      ->once()
+      ->andReturn(new Bulletin(['Blocks'=>[[],[]]]));
+
+    $bulletin = new Bulletin(['id'=>'1','PartialBulletin'=>true],$mockApi);
+    $bulletin->resolvePartial();
+
+    $this->assertEquals(2, count($bulletin->Blocks));
+    $this->assertInstanceOf(BulletinBlock::class, $bulletin->Blocks[0]);
+    $this->assertEquals(false, $bulletin->PartialBulletin);
+    \Mockery::close();
+  }
+
+  function test_calling_resolvePartial_on_a_non_partial_will_not_use_the_api()
+  {
+    $mockApi = \Mockery::mock(API::class);
+    $mockApi->shouldNotReceive('get')
+      ->andReturn(new Bulletin(['Blocks'=>[[],[]]]));
+
+    $bulletin = new Bulletin(['id'=>'1','PartialBulletin'=>false],$mockApi);
+
+    $bulletin->resolvePartial();
+
+    \Mockery::close();
+  }
+
+  function test_calling_resolvePartial_on_a_new_bulletin_will_result_in_an_exception()
+  {
+
+    $bulletin = new Bulletin(['id'=>'1','PartialBulletin'=>true]);
+
+    try{
+      $bulletin->resolvePartial();
+    } catch(CarouselModelException  $e){
+      return;
+    }
+
+    $this->fail('the exception was not called');
+  }
 
   function test_you_can_add_a_group_relationship_after_instantiation()
   {
