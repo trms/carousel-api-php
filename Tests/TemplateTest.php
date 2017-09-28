@@ -14,8 +14,8 @@ class TemplateTest extends PHPUnit_Framework_TestCase
 
     $template->Blocks = [$block1, $block2];
 
-    $this->assertEquals(['BlockType'=>'Text','Text'=>'foobarbaz'],  $template->toArray()['Blocks'][0]);
-    $this->assertEquals(['BlockType'=>'Rectangle'],  $template->toArray()['Blocks'][1]);
+    $this->assertArraySubset(['BlockType'=>'Text','Text'=>'foobarbaz'],  $template->toArray()['Blocks'][0]);
+    $this->assertArraySubset(['BlockType'=>'Rectangle'],  $template->toArray()['Blocks'][1]);
   }
 
 }

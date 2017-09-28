@@ -3,12 +3,17 @@
 use TRMS\Carousel\Exceptions\CarouselModelException;
 use TRMS\Carousel\Models\BulletinOrderEntry;
 
+use TRMS\Carousel\Server\API;
+
 class BulletinOrder extends CarouselModel
 {
   protected $endpoint = 'orderentries';
 
-  public function __construct(string $ZoneID, Array $props)
+  public function __construct(string $ZoneID, Array $props, API $api=null)
   {
+    if($api){
+      $this->setApi($api);
+    }
     $this->ZoneID = $ZoneID;
     $this->setOrderEntries($props);
   }
