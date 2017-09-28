@@ -32,8 +32,8 @@ class BulletinTest extends PHPUnit_Framework_TestCase
 
     $bulletin->Blocks = [$block1, $block2];
 
-    $this->assertEquals(['BlockType'=>'Text','Text'=>'foobarbaz'],  $bulletin->toArray()['Blocks'][0]);
-    $this->assertEquals(['BlockType'=>'Rectangle'],  $bulletin->toArray()['Blocks'][1]);
+    $this->assertArraySubset(['BlockType'=>'Text','Text'=>'foobarbaz'],  $bulletin->toArray()['Blocks'][0]);
+    $this->assertArraySubset(['BlockType'=>'Rectangle'],  $bulletin->toArray()['Blocks'][1]);
   }
 
   function test_the_resolvePartial_method_will_get_partial_bulletins_from_the_api()
@@ -48,6 +48,7 @@ class BulletinTest extends PHPUnit_Framework_TestCase
 
     $this->assertEquals(2, count($bulletin->Blocks));
     $this->assertInstanceOf(BulletinBlock::class, $bulletin->Blocks[0]);
+    $this->assertInstanceOf(API::class, $bulletin->Blocks[0]->getApi());
     $this->assertEquals(false, $bulletin->PartialBulletin);
     \Mockery::close();
   }

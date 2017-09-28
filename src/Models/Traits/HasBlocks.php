@@ -19,6 +19,10 @@ trait HasBlocks
 
   public function addBlock(BulletinBlock $block)
   {
+    $api = $this->getApi();
+    if($api){
+      $block->setApi($api);
+    }
     array_push($this->Blocks, $block);
     return $this;
   }

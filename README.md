@@ -30,6 +30,8 @@ composer install trms/carousel
 
 [Bulletins](#bulletin)
 
+[Bulletin & Template Blocks](#bulletinblock)
+
 [Groups](#group)
 
 [Media](#media)
@@ -246,6 +248,91 @@ A template is the starting point for a standard Bulletin and is comprised of a b
 |Blocks|array|An array of Block objects|
 |PreviewImageUrl|string|A low resolution rendering of the template|
 |FullImageUrl|string|A full resolution rendering of the template|
+
+### BulletinBlock
+`TRMS\Carousel\Models\BulletinBlock`
+
+A BulletinBlock is an area of content within a `Bulletin` or a `Template`.  Blocks can be `Text`, `Picture`, `Video`, or `WebPicture`.  Text blocks are just that, blocks containing text. Picture and Video blocks will take a Media Object. WebPicture blocks take the URL of an image. There are many properties on a block some of which apply to only one of the four `BlockType`s.  Many have several properties that are used to make an effect, like a drop shadow or a text glow.
+#### Methods
+|Method|Parameters|Returns|Description|
+|------|----------|-------|-----------|
+|setMedia|Media Object|self - chainable|Sets the Media to be used in this model and sets the `blockType` to the corresponding Media type.|
+|getMedia|none|Media Object|Gets the related Media model.|
+#### Properties
+|Property|type|Description|
+|--------|----|-----------|
+BlockType|enumerable|Indicates the type of the block: `Rectangle`, `Ellipse`, `Text`, `Picture`, `WebPicture`, `Video`|
+Name|string|The name of the block|
+|**Size and Position**|
+X|int|The x coordinate of the upper left corner of the block.|
+Y|int|The y coordinate of the upper left corner of the block.|
+Width|int|The width in pixels of the block.|
+Height|int|The height in pixels of the block.|
+RotateDegrees:|int|The rotation of the block in degrees|
+|**Text Basic**|
+Text|string|The text to be displayed in a text block|
+AutoSizeText|boolean|If the block should auto size the text to fill the available block.  If false the `TextSize` will be used|
+TextSize|int|The font size in points|
+|**Text Style**|
+TextFont|string|The font name of an installed font. (this is a relationship, getting the installed fonts is not currently supported in this package)|
+TextBold|boolean|Bold styling|
+TextItalic|boolean|Italic styling|
+TextStrikeout|boolean|Strikeout styling|
+TextUnderline|boolean|Underline styling|
+|**Text Color**|
+TextColor|css color value|The text color|
+TextColorOpacity|float 0-1|The opacity of the text|
+|**Text Alignment**|
+TextHorizAlignment|enumerable|The horizontal alignment of the text: `Near`,`Far`,`Center`|
+TextVertAlignment|enumerable|The horizontal alignment of the text: `Near`,`Far`,`Center`|
+TextRightToLeft|boolean|Draw the text right to left|
+TextWrap|boolean|Should the text line wrap|
+|**Text Gradient Fill**|
+TextGradient|boolean|Enable text gradient|
+TextGradientColor|css color value|The color of the gradient|
+TextGradientMode|enumerable|The direction of the gradient: `Horizontal`,`Vertical`,`ForwardDiagonal`,`BackwardDiagonal`|
+TextGradientOpacity|float 0-1|The opacity of the gradient|
+|**Text Stroke**|
+TextOutline|boolean|Enable text stroke|
+TextOutlineColor|css color value|The color of the stroke|
+TextOutlineOpacity|float 0-1|The opacity of the stroke|
+|**Text Drop Shadow**|
+TextShadow|boolean|Enable text shadow|
+TextShadowColor|css color value|The color of the shadow|
+TextShadowDepth|int|Value in pixels of the shadow depth|
+TextShadowOpacity|float 0-1|The opacity of the shadow|
+|**Text Glow**|
+TextGlow|boolean|Enable text glow|
+TextGlowColor|css color value|The color of the text glow|
+|**Block Color Fill**|
+RectColor|css color value|The background fill of the block|
+RectColorOpacity|float 0-1|The opacity of the fill|
+|**Block Gradient**|
+RectGradient||boolean|Enable block gradient|
+RectGradientColor|css color value|The color of the gradient|
+RectGradientMode|enumerable|The direction of the gradient: `Horizontal`,`Vertical`,`ForwardDiagonal`,`BackwardDiagonal`|
+RectGradientOpacity|float 0-1|The opacity of the gradient|
+|**Block Stroke**|
+RectOutline|boolean|Enable block stroke|
+RectOutlineColor|css color value|The color of the stroke|
+RectOutlineWidth|int|The width in pixels of the stroke|
+RectOutlineOpacity|float 0-1|The opacity of the stroke|
+|**Block Drop Shadow**|
+RectShadow|boolean|Enable block shadow|
+RectShadowColor|css color value|The color of the shadow|
+RectShadowDepth|int|Value in pixels of the shadow depth|
+RectShadowOpacity|float 0-1|The opacity of the shadow|
+|**Block Reflection**|
+Reflection|boolean|Enable block reflection|
+ReflectionOffset|int|Value in pixels of the reflection offset|
+ReflectionHeight|int|Value in pixels of the reflection height|
+ReflectionOpacity|float 0-1|The opacity of the reflection|
+|**Picture Block**|
+HorizAlignment|enumerable|The horizontal position of the image in the block: `Left`,`Center`,`Right`|
+VertAlignment|enumerable|The vertical position of the image in the block: `Top`,`Center`,`Bottom`|
+MaintainAspectRatio|boolean|Should the image stretch to fill the block|
+|**Web Picture Block**|
+ImageURL|string|URL of a remote image asset|
 
 ### Group
 `TRMS\Carousel\Models\Group`

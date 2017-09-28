@@ -12,11 +12,11 @@ abstract class CarouselModel implements SaveableInterface
 
   public function __construct(Array $props = [],API $api=null)
   {
-    $this->setProps($props);
-
     if($api){
       $this->setApi($api);
     }
+    $this->setProps($props);
+
   }
 
   public function setProps(Array $props)

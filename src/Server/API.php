@@ -66,7 +66,7 @@ class API
       $response = $apiRequest->get($request->url(),$request->queryParams);
 
       if($responseClass === BulletinOrder::class){
-        return new BulletinOrder($request->queryParams['ZoneID'], $response);
+        return new BulletinOrder($request->queryParams['ZoneID'], $response, $this);
       }
 
       return collect($response)->filter()->map(function($properties) use ($responseClass){
@@ -79,7 +79,7 @@ class API
   {
     $endpoint = $model->getSaveEndpoint();
     $method = $model->getSaveMethod();
-    if($model->getApi() && $model->PartialBulletin){
+    if($model->getApi() && empty($model->PartialBulletin) === false){
       $model->resolvePartial();
     }
     $options = [
