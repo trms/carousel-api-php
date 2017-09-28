@@ -15,7 +15,7 @@ This package should be installed with composer and requires PHP 7+
 ```bash
 composer install trms/carousel
 ```
-## [Examples](#basic-useage-examples)
+## [Examples](#basic-usage-examples)
 
 ## [Servers & Requests](#servers-and-requests)
 [The Server Instance](#api)
@@ -44,7 +44,7 @@ composer install trms/carousel
 
 ## [Thrown Exceptions](#exceptions)
 
-## Basic Useage Examples
+## Basic Usage Examples
 
 ### Creating a server instance
 Server methods that return more than one object will return a [collection](https://github.com/tightenco/collect), which can be treated like an array.
@@ -55,7 +55,7 @@ $server = new Server();
 $server->connect('http://my_carousel_server.com', 'username', 'password');
 ```
 
-### Requsting Carousel Resources
+### Requesting Carousel Resources
 All of the requests for Carousel resources are created by instantiating a `ModelRequest` with the appropriate `Model` class name and passing that to the server's `get` method.  Passing an array of parameters to the `ModelRequest` is also important so that your query is limited to the items you want to get.
 
 For example, to get a set of bulletins in a given zone:
@@ -68,7 +68,7 @@ $bulletins = $server->get($request);
 ```
 
 ### Saving a Resource
-New or exisiting resources can be saved by passing them to the `save` method on a server instance.
+New or existing resources can be saved by passing them to the `save` method on a server instance.
 
 ```php
 use TRMS\Carousel\Models\BulletinTag;
@@ -87,7 +87,7 @@ use TRMS\Carousel\Models\Template;
 
 
 $templates = $server->get(new ModelRequest(Template::class, ['ZoneID'=>'5','IsDeleted'=>false]));
-$template = $templates->first(); // the server returns a laravel collection.
+$template = $templates->first(); // the server returns a Laravel Collection.
 $bulletin = Bulletin::fromTemplate($templates->first());
 // here you would likely modify the bulletin's 'Blocks' to alter content
 $group = new Group(['ZoneID'=>'5']);
@@ -143,7 +143,7 @@ File upload requests are used to post images video or audio to the server in ord
 |Method|Parameters|Returns|Description|
 |------|----------|-------|-----------|
 |constructor|Model ClassName, associative array|Request Object|Pass this the class name of the Model you would like to retrieve (ie: Bulletin::class) and an associative array that determines the values to create the resource with. (ie: ['ZoneID'=>'5']) (currently only ZoneID is supported and its also required)|
-|addFile|string|self - chainable|The URL or filepath of the file to upload to the server|
+|addFile|string|self - chainable|The URL or file path of the file to upload to the server|
 
 ### BulletinOrderRequest
 `TRMS\Carousel\Requests\BulletinOrderRequest`
@@ -186,7 +186,7 @@ A Bulletin is a piece of content displayed in Carousel.  The closest analogy wou
 |setDateTimeOn|DateTime|self - chainable|Sets the `DateTimeOn` property.|
 |setDateTimeOff|DateTime|self - chainable|Sets the `DateTimeOff` property.|
 |resetCycleTimes|none|self - chainable|Resets the `CycleTimeOn` and `CycleTimeOff` to be 'on all day'.|
-|setCycleTimes|DateTime, DateTime|self - chainable|Sets the `CycleTimeOn` and `CycleTimeOff` propterties.|
+|setCycleTimes|DateTime, DateTime|self - chainable|Sets the `CycleTimeOn` and `CycleTimeOff` properties.|
 |setCycleTimeOn|DateTime|self - chainable|Sets the `CycleTimeOn` property.|
 |setCycleTimeOff|DateTime|self - chainable|Sets the `CycleTimeOff` property.|
 |setDaysOnAll|boolean (default true)|self - chainable|Sets display property for all days.|
@@ -202,13 +202,13 @@ A Bulletin is a piece of content displayed in Carousel.  The closest analogy wou
 |DwellTime|int|How long the bulletin displays each rotation.|
 |UseSystemDwellTime|boolean|Should the system decide how long this bulletin displays each rotation, if false use the defined dwell time.|
 |IsAlert|boolean|Is this Bulletin an alert bulletin? Alerts will override any non-alert content in a zone.|
-|IsDeleted|boolean|Soft deletion property, soft deleted bulletins will be cleaned up and permenantly deleted after a time.|
+|IsDeleted|boolean|Soft deletion property, soft deleted bulletins will be cleaned up and permanently deleted after a time.|
 |IsScheduled|boolean|Does this bulletin respect the DateTimeOn and DateTimeOff values|
 |DateTimeIOn|string|The date and time the bulletin will begin playing. (there are helper methods for setting this value)|
 |DateTimeIOff|string|The date and time the bulletin will stop playing. (there are helper methods for setting this value)|
 |CycleTimeIOn|string|The time the bulletin will begin playing each day it is scheduled Only the time portion of this is used by the server. (there are helper methods for setting this value)|
 |CycleTimeIOn|string|The time the bulletin will begin playing each day it is scheduled Only the time portion of this is used by the server. (there are helper methods for setting this value)|
-|WeekdayOnOff|int|A bitfield representation of the days of the week that this bulletin will play during its schedule. (there are helper methods for setting this value)|
+|WeekdayOnOff|int|A bit-field representation of the days of the week that this bulletin will play during its schedule. (there are helper methods for setting this value)|
 |WeekdayOnOffDescription|string (read only)|A human readable representation of the WeekdayOnOff value.|
 |IsRepeating|boolean|Does this bulletin repeat playback every Nth bulletin.|
 |RepeatInterval|int|How often a repeating bulletin repeats.|
@@ -443,7 +443,7 @@ This represents a Group and the order of its Bulletins.  The order of the `Bulle
 
 
 ## Exceptions
-You can expect the following exceptions to be thrown if things go off the rails with the server, or if you attepmpt to do things that are unsupported or not allowed.
+You can expect the following exceptions to be thrown if things go off the rails with the server, or if you attempt to do things that are unsupported or not allowed.
 
 `TRMS\Carousel\Exceptions\CarouselAPIException`
 `TRMS\Carousel\Exceptions\CarouselModelException`
