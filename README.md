@@ -204,10 +204,10 @@ A Bulletin is a piece of content displayed in Carousel.  The closest analogy wou
 |IsAlert|boolean|Is this Bulletin an alert bulletin? Alerts will override any non-alert content in a zone.|
 |IsDeleted|boolean|Soft deletion property, soft deleted bulletins will be cleaned up and permanently deleted after a time.|
 |IsScheduled|boolean|Does this bulletin respect the DateTimeOn and DateTimeOff values|
-|DateTimeIOn|string|The date and time the bulletin will begin playing. (there are helper methods for setting this value)|
-|DateTimeIOff|string|The date and time the bulletin will stop playing. (there are helper methods for setting this value)|
-|CycleTimeIOn|string|The time the bulletin will begin playing each day it is scheduled Only the time portion of this is used by the server. (there are helper methods for setting this value)|
-|CycleTimeIOn|string|The time the bulletin will begin playing each day it is scheduled Only the time portion of this is used by the server. (there are helper methods for setting this value)|
+|DateTimeOn|string|The date and time the bulletin will begin playing. (there are helper methods for setting this value)|
+|DateTimeOff|string|The date and time the bulletin will stop playing. (there are helper methods for setting this value)|
+|CycleTimeOn|string|The time the bulletin will begin playing each day it is scheduled Only the time portion of this is used by the server. (there are helper methods for setting this value)|
+|CycleTimeOff|string|The time the bulletin will stop playing each day it is scheduled Only the time portion of this is used by the server. (there are helper methods for setting this value)|
 |WeekdayOnOff|int|A bit-field representation of the days of the week that this bulletin will play during its schedule. (there are helper methods for setting this value)|
 |WeekdayOnOffDescription|string (read only)|A human readable representation of the WeekdayOnOff value.|
 |IsRepeating|boolean|Does this bulletin repeat playback every Nth bulletin.|
