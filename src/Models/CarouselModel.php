@@ -107,6 +107,9 @@ abstract class CarouselModel implements SaveableInterface
       ->map(function($property){
         return $this->flattenRelationships($property);
       })
+      ->reject(function($property){
+        return is_null($property);
+      })
       ->toArray();
 
     return $properties;
