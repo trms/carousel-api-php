@@ -3,6 +3,7 @@
 use TRMS\Carousel\Requests\ModelRequest;
 use TRMS\Carousel\Exceptions\CarouselRequestException;
 use TRMS\Carousel\Models\Bulletin;
+use TRMS\Carousel\Models\BulletinTag;
 
 
 class ModelRequestTest extends PHPUnit_Framework_TestCase
@@ -42,5 +43,11 @@ class ModelRequestTest extends PHPUnit_Framework_TestCase
       return;
     }
     $this->fail('the exception was not thrown');
+  }
+
+  function test_it_can_handle_a_class_with_CarouselModel_as_a_grandparent()
+  {
+    $request = \Mockery::mock(ModelRequest::class,[BulletinTag::class])->makePartial();
+    $this->assertEquals('bulletintags',$request->url());
   }
 }

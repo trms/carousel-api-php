@@ -12,7 +12,7 @@ class ModelRequest
   {
     $responseClass = new $responseClassName();
 
-    if(get_parent_class($responseClass) !== CarouselModel::class){
+    if(get_parent_class($responseClass) !== CarouselModel::class && get_parent_class(get_parent_class($responseClass)) !== CarouselModel::class ){
       throw new CarouselRequestException('The classname passed in to the ModelRequest must be a child of CarouselModel');
     }
 
