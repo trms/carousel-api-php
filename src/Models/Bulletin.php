@@ -104,15 +104,15 @@ class Bulletin extends CarouselModel
   public function resetSchedule()
   {
     $this->IsScheduled = false;
-    $this->DateTimeOn = Carbon::now()->setTime(0,0,0)->format(DateTime::W3C);
-    $this->DateTimeOff = Carbon::now()->setTime(23,59,59)->format(DateTime::W3C);
+    $this->DateTimeOn = Carbon::now()->setTime(0,0,0)->format('Y-m-d\TH:i:s');
+    $this->DateTimeOff = Carbon::now()->setTime(23,59,59)->format('Y-m-d\TH:i:s');
     return $this;
   }
 
   public function resetCycleTimes()
   {
-    $this->CycleTimeOn = Carbon::now()->setTime(0,0,0)->format(DateTime::W3C);
-    $this->CycleTimeOff = Carbon::now()->setTime(23,59,59)->format(DateTime::W3C);
+    $this->CycleTimeOn = Carbon::now()->setTime(0,0,0)->format('Y-m-d\TH:i:s');
+    $this->CycleTimeOff = Carbon::now()->setTime(23,59,59)->format('Y-m-d\TH:i:s');
     return $this;
   }
 
@@ -256,37 +256,37 @@ class Bulletin extends CarouselModel
   public function setSchedule(DateTime $on, DateTime $off)
   {
     $this->IsScheduled = true;
-    $this->DateTimeOn = $on->format(DateTime::W3C);
-    $this->DateTimeOff = $off->format(DateTime::W3C);
+    $this->DateTimeOn = $on->format('Y-m-d\TH:i:s');
+    $this->DateTimeOff = $off->format('Y-m-d\TH:i:s');
     return $this;
   }
   public function setDateTimeOn(DateTime $on)
   {
-    $this->DateTimeOn = $on->format(DateTime::W3C);
+    $this->DateTimeOn = $on->format('Y-m-d\TH:i:s');
     return $this;
   }
 
   public function setDateTimeOff(DateTime $off)
   {
-    $this->DateTimeOff = $off->format(DateTime::W3C);
+    $this->DateTimeOff = $off->format('Y-m-d\TH:i:s');
     return $this;
   }
 
-  public function setCycleTimes(DateTime$on, DateTime$off)
+  public function setCycleTimes(DateTime $on, DateTime $off)
   {
-    $this->CycleTimeOn = $on->format(DateTime::W3C);
-    $this->CycleTimeOff = $off->format(DateTime::W3C);
+    $this->CycleTimeOn = $on->format('Y-m-d\TH:i:s');
+    $this->CycleTimeOff = $off->format('Y-m-d\TH:i:s');
     return $this;
   }
 
   public function setCycleTimeOn(DateTime $on)
   {
-    $this->CycleTimeOn = $on->format(DateTime::W3C);
+    $this->CycleTimeOn = $on->format('Y-m-d\TH:i:s');
     return $this;
   }
   public function setCycleTimeOff(DateTime $off)
   {
-    $this->CycleTimeOff = $off->format(DateTime::W3C);
+    $this->CycleTimeOff = $off->format('Y-m-d\TH:i:s');
     return $this;
   }
 

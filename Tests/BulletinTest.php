@@ -142,10 +142,10 @@ class BulletinTest extends PHPUnit_Framework_TestCase
 
     $bulletin = new Bulletin;
 
-    $this->assertEquals($thisMorning->format(\DateTime::W3C), $bulletin->DateTimeOn);
-    $this->assertEquals($tonight->format(\DateTime::W3C), $bulletin->DateTimeOff);
-    $this->assertEquals($thisMorning->format(\DateTime::W3C), $bulletin->CycleTimeOn);
-    $this->assertEquals($tonight->format(\DateTime::W3C), $bulletin->CycleTimeOff);
+    $this->assertEquals($thisMorning->format('Y-m-d\TH:i:s'), $bulletin->DateTimeOn);
+    $this->assertEquals($tonight->format('Y-m-d\TH:i:s'), $bulletin->DateTimeOff);
+    $this->assertEquals($thisMorning->format('Y-m-d\TH:i:s'), $bulletin->CycleTimeOn);
+    $this->assertEquals($tonight->format('Y-m-d\TH:i:s'), $bulletin->CycleTimeOff);
   }
 
   function test_you_can_set_the_bulletins_display_times_individually()
@@ -158,8 +158,8 @@ class BulletinTest extends PHPUnit_Framework_TestCase
       ->setDateTimeOn($now)
       ->setDateTimeOff($tomorrow);
 
-    $this->assertEquals($now->format(\DateTime::W3C), $bulletin->DateTimeOn);
-    $this->assertEquals($tomorrow->format(\DateTime::W3C), $bulletin->DateTimeOff);
+    $this->assertEquals($now->format('Y-m-d\TH:i:s'), $bulletin->DateTimeOn);
+    $this->assertEquals($tomorrow->format('Y-m-d\TH:i:s'), $bulletin->DateTimeOff);
   }
 
   function test_you_can_set_the_bulletins_display_times_together_as_a_set()
@@ -174,8 +174,8 @@ class BulletinTest extends PHPUnit_Framework_TestCase
       ->setSchedule($now,$tomorrow);
 
     $this->assertTrue($bulletin->IsScheduled);
-    $this->assertEquals($now->format(\DateTime::W3C), $bulletin->DateTimeOn);
-    $this->assertEquals($tomorrow->format(\DateTime::W3C), $bulletin->DateTimeOff);
+    $this->assertEquals($now->format('Y-m-d\TH:i:s'), $bulletin->DateTimeOn);
+    $this->assertEquals($tomorrow->format('Y-m-d\TH:i:s'), $bulletin->DateTimeOff);
   }
 
   function test_you_can_set_the_bulletins_cycle_times_individually()
@@ -189,8 +189,8 @@ class BulletinTest extends PHPUnit_Framework_TestCase
       ->setCycleTimeOn($on)
       ->setCycleTimeOff($off);
 
-    $this->assertEquals($on->setTime(11,00,00)->format(\DateTime::W3C), $bulletin->CycleTimeOn);
-    $this->assertEquals($off->setTime(14,00,00)->format(\DateTime::W3C), $bulletin->CycleTimeOff);
+    $this->assertEquals($on->setTime(11,00,00)->format('Y-m-d\TH:i:s'), $bulletin->CycleTimeOn);
+    $this->assertEquals($off->setTime(14,00,00)->format('Y-m-d\TH:i:s'), $bulletin->CycleTimeOff);
   }
 
   function test_you_can_set_the_bulletins_cycle_times_together_as_a_set()
@@ -203,8 +203,8 @@ class BulletinTest extends PHPUnit_Framework_TestCase
     $bulletin
       ->setCycleTimes($on, $off);
 
-    $this->assertEquals($on->setTime(11,00,00)->format(\DateTime::W3C), $bulletin->CycleTimeOn);
-    $this->assertEquals($off->setTime(14,00,00)->format(\DateTime::W3C), $bulletin->CycleTimeOff);
+    $this->assertEquals($on->setTime(11,00,00)->format('Y-m-d\TH:i:s'), $bulletin->CycleTimeOn);
+    $this->assertEquals($off->setTime(14,00,00)->format('Y-m-d\TH:i:s'), $bulletin->CycleTimeOff);
   }
 
   function test_you_can_turn_all_days_on_and_off()
